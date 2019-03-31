@@ -10,10 +10,10 @@ export class CodeTypeEntity {
   @Column('varchar', {length: 100})
   type: string;
 
-  @Column('varchar', {length: 255})
+  @Column({type: 'varchar', length: 255, nullable: true})
   desc: string;
 
-  @Column('char', {length: 3})
+  @Column('char', {length: 3, default: 'en'})
   locale: string;
 
   @Column({type: 'tinyint', default: 1})
@@ -22,13 +22,13 @@ export class CodeTypeEntity {
   @CreateDateColumn()
   createdDate: Date;
 
-  @Column('varchar', {length: 40})
+  @Column('varchar', {length: 40, nullable: true})
   createdBy: string;
 
   @UpdateDateColumn()
   updatedDate: Date;
   
-  @Column('varchar', {length: 40})
+  @Column('varchar', {length: 40, nullable: true})
   updatedBy: string;
 
   @OneToMany(type => CodeEntity, codes => codes.codeType)

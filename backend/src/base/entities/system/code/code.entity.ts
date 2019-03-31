@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { CodeTypeEntity } from '../code_type/code_type.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, VersionColumn } from 'typeorm';
+import { CodeTypeEntity } from '../code-type/code-type.entity';
 
 @Entity('tbl_codes')
 export class CodeEntity {
@@ -14,24 +14,27 @@ export class CodeEntity {
   codeName: string;
 
   @Column('varchar', {length: 255})
+  codeValue: string;
+
+  @Column('varchar', {length: 255, nullable: true})
   codeDesc: string;
 
   @Column({type: 'tinyint', default: 1})
   status: boolean;
 
-  @Column('tinyint')
+  @VersionColumn()
   version: number;
 
   @CreateDateColumn()
   createdDate: Date;
 
-  @Column('varchar', {length: 40})
+  @Column('varchar', {length: 40, nullable: true})
   createdBy: string;
 
   @UpdateDateColumn()
   updatedDate: Date;
   
-  @Column('varchar', {length: 40})
+  @Column('varchar', {length: 40, nullable: true})
   updatedBy: string;
 
   @ManyToOne(type => CodeTypeEntity, codeType => codeType.codes, {
