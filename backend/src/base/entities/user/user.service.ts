@@ -25,10 +25,16 @@ export class UserService {
     return user;
   }
 
-  async read(id: string){
-    const user = await this.userRepository.findOne({
-      where: {id}
-    });
+  async read(id: string, relations: boolean = true){
+    let condition = {
+      where: {id: id}
+    };
+    if(relations){
+      condition['relations'] = ['userAuth'];
+    }
+
+    const user = await this.userRepository.findOne(condition);
+
     if(!user){
       throw new HttpException("User not found", HttpStatus.NOT_FOUND);
     }
@@ -37,7 +43,7 @@ export class UserService {
 
   async findUserAuth(condition: {}){    
     return await this.userRepository.findOne(condition);
-  }
+  }  
 
   async update(id: string, data: Partial<UserDTO>){
     const user = await this.userRepository.update({id}, data);
@@ -66,11 +72,18 @@ export class UserService {
     if(!user){
       throw new HttpException("User not found", HttpStatus.NOT_FOUND);
     }    
+    
     const userAuth = await this.userAuthRepository.findOne({
-      where: {userAuthId}
+      where: {id: userAuthId}
     });
+    
     user.userAuth = userAuth;
-    user = await this.userRepository.save(user);
+
+    const updatedUser = await this.userRepository.update(id, user);
+    user = await this.userRepository.findOne({
+      where: {id}
+    });
+
     return user;
   }
 

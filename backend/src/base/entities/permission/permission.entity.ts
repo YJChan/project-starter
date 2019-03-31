@@ -15,10 +15,10 @@ export class PermissionEntity {
   @Column('varchar', {length: 100})
   name: string;
 
-  @Column('varchar', {length : 50})
+  @Column({type: 'varchar', length : 75})
   action: string;
 
-  @Column('varchar', {length: 255})
+  @Column({type:'varchar', length: 255})
   resource: string;
 
   @Column('varchar', {length: 255})

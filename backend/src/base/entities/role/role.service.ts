@@ -27,18 +27,26 @@ export class RoleService implements OnModuleInit{
     return role;
   }
 
-  async findAll(){
-    const roles = await this.roleRepository.find({
-      relations: ['permissions']
-    });
+  async findAll(relation: boolean = true){
+    let condition = {};
+
+    if(relation){
+      condition['relations'] = ['permissions'];
+    }
+    const roles = await this.roleRepository.find(condition);
     return roles;
   }  
 
-  async findOne(id: string){
-    return await this.roleRepository.findOne({
-      where: {id},
-      relations: ['permissions']
-    });
+  async findOne(id: string, relation: boolean = true){
+    let condition = {
+      where: {id}      
+    };
+
+    if(relation){
+      condition['relations'] = ['permissions'];
+    }
+
+    return await this.roleRepository.findOne(condition);
   }
 
   async update(id: string, roleToUpdate: Partial<RoleDTO>){
@@ -51,8 +59,10 @@ export class RoleService implements OnModuleInit{
     return await this.findOne(id);
   }
 
-  async delete(id: string){    
+  async delete(id: string){
+    console.log('req to delete role %s', id);
     const userAuthWithThisRole = await this.userAuthService.findRoleInUserAuth(id);
+    console.log('role user attached %o', userAuthWithThisRole);
     if(userAuthWithThisRole.length > 0){
       throw new HttpException('User attached to this role, cannot be delete', HttpStatus.BAD_REQUEST);
     }

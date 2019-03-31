@@ -71,7 +71,7 @@ export class UserAuthService implements OnModuleInit{
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);      
     }  
     if(! user.userAuth)  {
-      throw new HttpException('User do not have any authentication setup', HttpStatus.NOT_FOUND);
+      throw new HttpException('User does not have any authentication setup', HttpStatus.NOT_FOUND);
     }
     const userAuthId = user.userAuth.id;    
     user = await this.userService.removeUserAuth(user.id);
@@ -84,6 +84,61 @@ export class UserAuthService implements OnModuleInit{
     return unregisterResult;
   }
 
+  async attachRole(userAuthId: string, roleId:string){
+    try{
+      const role = await this.roleService.findOne(roleId, false);
+      if(! role){
+        throw new HttpException({errCode: 'ROLE.NOTFOUND', message: 'Role not found'}, HttpStatus.NOT_FOUND);
+      }
+      const userAuth = await this.userAuthRepository.update(userAuthId, {role: role});
+
+      return userAuth;
+      
+    }catch(err){
+      if(err.code !== undefined){
+        throw new HttpException({
+          errCode: err.code,
+          message: err.message
+        }, HttpStatus.BAD_REQUEST);  
+      }else{
+        throw new HttpException(err, HttpStatus.BAD_REQUEST);
+      }
+    }
+  }
+
+  async detachRole(userId: string){
+    try{      
+      const user = await this.userService.read(userId);
+      if(! user.userAuth){
+        throw new HttpException({
+          errCode: 'AUTH.NOTFOUND',
+          message: 'User does not have any authentication setup'
+        }, HttpStatus.BAD_REQUEST);
+      }
+      let userAuth = await this.userAuthRepository.findOne({
+        where: {id: user.userAuth.id}
+      });
+
+      userAuth.role = null;
+      const detachedRole = this.userAuthRepository.update(user.userAuth.id, userAuth);      
+      userAuth = await this.userAuthRepository.findOne({
+        where: {
+          id: user.userAuth.id
+        }
+      });
+
+      return userAuth;
+    }catch(err){
+      if(err.code !== undefined){
+        throw new HttpException({
+          errCode: err.code,
+          message: err.message
+        }, HttpStatus.BAD_REQUEST);  
+      }else{
+        throw new HttpException(err, HttpStatus.BAD_REQUEST);
+      }
+    }
+  }
 
   async login(data: AuthenticateUserDTO){
     const {loginName, password} = data;
@@ -133,14 +188,16 @@ export class UserAuthService implements OnModuleInit{
   }
 
   async findRoleInUserAuth(id: string){
-    return await this.userAuthRepository.findAndCount({
-      where: {roleId: id}
+    return await this.userAuthRepository.find({
+      where: {role: id}
     });
   }
 
   async seekPermission(payload: any, roles: any, permissions: any){
     let accessPermitted: boolean = false;
+    let validRole: boolean = false;
     const { username, act } = payload;
+
     const user = await this.userAuthRepository.findOne({
       where : { loginName: username, accessToken: act},
       relations: ['role']
@@ -158,12 +215,20 @@ export class UserAuthService implements OnModuleInit{
     //console.log('role and permission %o', roleAndPermissions.permissions);
 
     if(!roleAndPermissions.permissions){
-      throw new HttpException('Role is denied', HttpStatus.BAD_REQUEST);
-    }
-    if(user.role.name !== roleAndPermissions.name){
-      throw new HttpException('User does not has required role', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Role without permission is denied to access any api', HttpStatus.BAD_REQUEST);
     }
 
+    for(let i = 0; i < roles.length; i ++){
+      if(user.role.name === roles[i]){
+        validRole = true;
+        break;
+      }
+    }
+
+    if(! validRole){
+      throw new HttpException('User does not has required role', HttpStatus.UNAUTHORIZED);
+    }
+    
     for(let i = 0; i < roleAndPermissions.permissions.length; i ++){
       for(let n = 0; n < permissions.length; n ++){
         if(roleAndPermissions.permissions[i].action === permissions[n]){
