@@ -1,0 +1,98 @@
+<h2>Permissions Management</h2>
+<clr-datagrid>
+  <clr-dg-column>Role
+      <clr-dg-string-filter [clrDgStringFilter]="roleFilter"></clr-dg-string-filter>
+  </clr-dg-column>
+  <clr-dg-column>Access Type</clr-dg-column>
+  <clr-dg-column>Action
+      <clr-dg-string-filter [clrDgStringFilter]="permissionFilter"></clr-dg-string-filter>
+  </clr-dg-column>
+  <clr-dg-column>Resource</clr-dg-column>
+  <clr-dg-column>Description</clr-dg-column>
+  <clr-dg-column>Created Date</clr-dg-column>
+  <clr-dg-column>Updated Date</clr-dg-column>
+  <clr-dg-column>
+    <button class="btn btn-sm btn-primary" (click)="create()">Create</button>
+  </clr-dg-column>
+  <clr-dg-placeholder>We couldn't find any permission!</clr-dg-placeholder>
+  <clr-dg-row *clrDgItems="let p of permissions" [clrDgItem]="p">
+    <clr-dg-cell>{{p.role.name}}</clr-dg-cell>
+    <clr-dg-cell>{{p.name}}</clr-dg-cell>
+    <clr-dg-cell>{{p.action}}</clr-dg-cell>
+    <clr-dg-cell>{{p.resource}}</clr-dg-cell>
+    <clr-dg-cell>{{p.description}}</clr-dg-cell>
+    <clr-dg-cell>{{p.createdDate | date}}</clr-dg-cell>
+    <clr-dg-cell>{{p.updatedDate | date}}</clr-dg-cell>
+    <clr-dg-cell>
+      <div class="btn-group btn-regular">
+        <button class="btn btn-sm" (click)="edit(p.id)">Edit</button>
+        <button class="btn btn-danger btn-sm" (click)="delete(p.id)">Delete</button>
+      </div>
+    </clr-dg-cell>
+  </clr-dg-row>
+  <clr-dg-footer>
+    <!-- <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">permission(s) per page</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+          of {{permissions.totalItems}} permission(s)
+      </clr-dg-pagination> -->
+      {{ permissions.length }} of permission(s)
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="editPermission">
+    <h3 class="modal-title">Edit Permission: {{ permission.name }} </h3>
+    <div class="modal-body">
+      <form clrForm>
+        <div class="clr-row">
+          <label class="clr-col-sm-12 clr-col-md-2">
+            <b>Role</b>
+          </label>
+          <div class="clr-select-wrapper clr-col-md-3 clr-col-lg-3 clr-col-sm-4 clr-col-6">
+            <select id="select" name="role" [(ngModel)]="permission.role.id">
+              <option [value]="null">-- Please select --  </option>
+              <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+            </select>
+            <span class="clr-subtext">The role who are going to possessed this permission.</span>
+          </div>
+        </div>
+        <clr-input-container>
+          <label>Permission Access Type</label>
+          <input clrInput class="input-block" [(ngModel)]="permission.name" name="name" required />
+          <clr-control-helper>The name that recognized by administrator.</clr-control-helper>
+          <clr-control-error>This field is required!</clr-control-error>
+        </clr-input-container>
+        <clr-textarea-container>
+          <label>Permission Description</label>
+          <textarea clrTextarea cols="90" name="description" [(ngModel)]="permission.description"></textarea>
+        </clr-textarea-container>
+        <clr-input-container>
+          <label>Action</label>
+          <input clrInput class="input-block" [(ngModel)]="permission.action" name="action" required />
+          <clr-control-helper>System will recognized this access type and constraint api requrest.</clr-control-helper>
+          <clr-control-error>This field is required!</clr-control-error>
+        </clr-input-container>
+        <clr-input-container>
+          <label>Resource</label>
+          <input clrInput class="input-block" [(ngModel)]="permission.resource" name="resource" required />
+          <clr-control-helper>The uniquely identify the resource url allowed to request by api user.</clr-control-helper>
+          <clr-control-error>This field is required!</clr-control-error>
+        </clr-input-container>
+      </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="editPermission = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+  </clr-modal>
+
+  <clr-modal [(clrModalOpen)]="deletePermission" [(clrModalSize)]="sm">
+      <h3 class="modal-title">Delete Permission: {{ permissionToDelete }}</h3>
+      <div class="modal-body">
+          <p>Are you sure you want to delete, {{ permissionToDelete }}</p>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-outline" (click)="deletePermission = false">No</button>
+          <button type="button" class="btn btn-primary" (click)="confirmDelete()">Yes</button>
+      </div>
+  </clr-modal>

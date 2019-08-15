@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 
-export class Encryption{
+export class Encryption {
 
   public async generateSalt(){
     const salt = await bcrypt.genSalt(8);
@@ -15,7 +15,7 @@ export class Encryption{
     return await bcrypt.compare(password, attemps);
   }
 
-  public async generateAccessToken(){
+  public async generateAccessToken() {
     return this.guid();
   }
 
@@ -23,7 +23,7 @@ export class Encryption{
     return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
       this.s4() + '-' + this.s4() + this.s4() + this.s4();
   }
-  
+
   private s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)

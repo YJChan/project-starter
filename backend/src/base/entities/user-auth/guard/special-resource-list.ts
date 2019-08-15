@@ -1,6 +1,8 @@
 export const SpecialResourceList = {
   whitelist :  [
-    '/api/auth/sign-in'
+    '/',
+    '/sign-in',
+    '/api/auth/sign-in',
   ],
-  blacklist: []
+  blacklist: [],
 };

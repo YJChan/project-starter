@@ -60,7 +60,7 @@ export class PermissionService implements OnModuleInit {
   }
 
   async findOne(id: string){
-    const permission = await this.permissionRepository.findOne({where: {id}});
+    const permission = await this.permissionRepository.findOne({where: {id}, relations: ['role']});
     if(!permission){
       throw new HttpException('Permission not found', HttpStatus.NOT_FOUND);      
     }
@@ -68,7 +68,9 @@ export class PermissionService implements OnModuleInit {
   }
 
   async findAll(){
-    const permissions = await this.permissionRepository.find();
+    const permissions = await this.permissionRepository.find({
+      relations: ['role']
+    });
     if(!permissions){
       throw new HttpException('Permission not found', HttpStatus.NOT_FOUND);      
     }

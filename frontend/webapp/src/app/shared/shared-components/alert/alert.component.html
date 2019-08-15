@@ -1,0 +1,13 @@
+<clr-alert [clrAlertType]="type" *ngIf="showAlert" [clrAlertClosable]="dismissable"
+  [clrAlertSizeSmall]="size" [clrAlertAppLevel]="alertLevel" [clrAlertIcon]="icon">
+  <div class="inline-message">
+    <clr-alert-item>
+        <span class="alert-text">
+            {{ message }}
+        </span>
+    </clr-alert-item>
+    <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+      <clr-icon aria-hidden="true" shape="close"></clr-icon>
+    </button>
+  </div>
+</clr-alert>

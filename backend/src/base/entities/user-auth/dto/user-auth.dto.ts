@@ -1,8 +1,8 @@
-import { UserAuthEntity } from "../../user-auth/user-auth.entity";
+import { UserAuthEntity } from '../../user-auth/user-auth.entity';
 import { IsString, IsDate, IsBoolean, IsInt, IsDateString, IsNotEmpty } from 'class-validator';
 
-export class UserAuthDTO{
-    
+export class UserAuthDTO {
+
   id: string;
 
   @IsInt()
@@ -15,7 +15,7 @@ export class UserAuthDTO{
   password: string;
 
   salt: string;
-  
+
   @IsString()
   securityQuestion: string;
 
@@ -24,27 +24,27 @@ export class UserAuthDTO{
 
   @IsInt()
   attemptsMade: number;
-  
+
   accessToken: string;
 
   @IsDateString()
   lastPasswordChangedDt: Date;
-  
+
   createdDate: Date;
 
   @IsString()
   createdBy: string;
-  
+
   updatedDate: Date;
-  
+
   @IsString()
   updatedBy: string;
-  
+
   version: number;
 
 }
 
-export class AuthenticateUserDTO{
+export class AuthenticateUserDTO {
   @IsNotEmpty()
   loginName: string;
 
@@ -52,7 +52,7 @@ export class AuthenticateUserDTO{
   password: string;
 }
 
-export class RegisterUserAuthDTO{
+export class RegisterUserAuthDTO {
   @IsNotEmpty()
   loginName: string;
 
@@ -63,11 +63,11 @@ export class RegisterUserAuthDTO{
   passwordConfirm: string;
 }
 
-export class UserAuthRO{        
-  id: string;  
+export class UserAuthRO {
+  id: string;
   loginType: number;
   loginName: string;
-  salt: string;  
+  salt: string;
   password: string;
   securityQuestion: string;
   securityAnswer: string;
@@ -76,6 +76,6 @@ export class UserAuthRO{
   createdDate: Date;
   createdBy: string;
   updatedDate: Date;
-  updatedBy: string;  
+  updatedBy: string;
   version: number;
 }

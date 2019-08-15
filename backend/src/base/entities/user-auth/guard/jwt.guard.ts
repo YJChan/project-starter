@@ -43,7 +43,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (!permission) {
       throw new HttpException('This resource is not available', HttpStatus.BAD_GATEWAY);
     }
+
+    /**
+     * Plan to allow non role and permission role, if there is any route that would allow publicly call
+     */
     
+     
     const authHeaders = request.headers.authorization;
     if(authHeaders === undefined || authHeaders === null){
       throw new HttpException('Request is not authorized', HttpStatus.UNAUTHORIZED);

@@ -1,0 +1,7 @@
+<div class="content-container">
+  <div class="content-area">
+    <app-alert></app-alert>
+    <router-outlet></router-outlet>
+  </div>
+  <app-sidebar class="sidenav" [clr-nav-level]="2" *ngIf="currentUser"></app-sidebar>
+</div>

@@ -1,0 +1,8 @@
+.inline-message{
+  display: flex;
+}
+
+.close{
+  height: 0;
+  flex: 0;
+}

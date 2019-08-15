@@ -1,0 +1,14 @@
+<nav>
+  <section class="sidenav-content">
+    <a class="nav-link" routerLinkActive="active" [routerLink]="['/', 'dashboard']">Overview</a>
+    <section class="nav-group collapsible">
+      <input id="tab1" type="checkbox">
+      <label for="tab1">Administration</label>
+      <ul class="nav-list">
+        <li><a class="nav-link" routerLinkActive="active" [routerLink]="['/administrator', 'user']">Users</a></li>
+        <li><a class="nav-link" routerLinkActive="active" [routerLink]="['/administrator', 'role']">Roles</a></li>
+        <li><a class="nav-link" routerLinkActive="active" [routerLink]="['/administrator', 'permission']">Permissions</a></li>
+      </ul>
+    </section>
+  </section>
+</nav>

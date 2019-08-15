@@ -1,0 +1,109 @@
+<h2>Roles Management</h2>
+<clr-datagrid>
+  <clr-dg-column>Level</clr-dg-column>
+  <clr-dg-column>Role name</clr-dg-column>
+  <clr-dg-column>Description</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Updated date</clr-dg-column>
+  <clr-dg-column><button class="btn btn-sm btn-primary" (click)="create()">Create</button></clr-dg-column>
+  <clr-dg-row *ngFor="let role of roles">
+    <clr-dg-cell>{{role.level}}</clr-dg-cell>
+    <clr-dg-cell>{{role.name}}</clr-dg-cell>
+    <clr-dg-cell>{{role.description}}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="label" [ngClass]="{'label-success': role.status === 1, 'label-error': role.status === 0}">
+        {{role.status | status :'number' }}
+      </span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{role.createdDate | date}}</clr-dg-cell>
+    <clr-dg-cell>{{role.updatedDate | date}}</clr-dg-cell>
+    <clr-dg-cell>
+      <div class="btn-group btn-regular">
+        <button class="btn btn-sm" (click)="edit(role.id)">Edit</button>
+        <button class="btn btn-danger btn-sm" (click)="delete(role.id)">Delete</button>
+      </div>
+    </clr-dg-cell>
+    <clr-dg-row-detail *clrIfExpanded>
+      <table class="table table-compact" style="margin:0;">
+        <thead>
+          <th class="left">access type</th>
+          <th class="left">action</th>
+          <th class="left">resource</th>
+          <th class="left">description</th>  
+          <th class="left">created date</th>
+          <th class="left">updated date</th>
+        </thead>
+        <tbody>
+          <tr *ngIf="role.permissions.length === 0">
+            <td colspan="6" class="text-center">No permission(s) set for this role.</td>
+          </tr>
+          <tr *ngFor="let p of role.permissions">
+            <td class="left">{{ p.name }}</td>
+            <td class="left">{{ p.action }}</td>
+            <td class="left">{{ p.resource }}</td>
+            <td class="left">{{ p.description }}</td>
+            <td class="left">{{ p.createdDate | date }}</td>
+            <td class="left">{{ p.updatedDate | date }}</td>            
+          </tr>
+        </tbody>
+      </table>
+    </clr-dg-row-detail>
+  </clr-dg-row>
+  <clr-dg-footer>{{ roles.length }} role(s)</clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="editRole">
+  <h3 class="modal-title">Edit Role: {{ role.name }} </h3>
+  <div class="modal-body">
+    <form clrForm>
+      <clr-input-container>
+        <label>Role name</label>
+        <input clrInput class="input-block" [(ngModel)]="role.name" name="name" required />
+        <clr-control-helper>System will recognized this name affected api calls and system modules access.</clr-control-helper>
+        <clr-control-error>This field is required!</clr-control-error>
+      </clr-input-container>
+      <clr-textarea-container>
+        <label>Role Description</label>
+        <textarea clrTextarea cols="90" name="description" [(ngModel)]="role.description"></textarea>
+      </clr-textarea-container>
+      <br>
+      <div class="clr-row">
+        <label class="clr-col-sm-12 clr-col-md-2">
+         <b>Level</b>
+        </label>
+        <div class="clr-select-wrapper clr-col-md-1 clr-col-sm-1 clr-col-1 clr-col-lg-1">
+          <select id="select" class="clr-select" name="level" [(ngModel)]="role.level">
+            <option [value]="null">-- Please select --  </option>
+            <option *ngFor="let lv of level" [value]="lv">{{ lv }}</option>
+          </select>
+          <span class="clr-subtext">The higher the number, the higher level of the access right.</span>
+        </div>    
+      </div>
+      <br>
+      <div class="clr-row">       
+        <label class="clr-col-sm-12 clr-col-md-2">
+          <b>Status</b>
+        </label>
+        <div class="clr-toggle-wrapper clr-col-sm-12 clr-col-md-2 clr-col-lg-2 clr-col-12">
+          <input type="checkbox" name="status" clrToggle [(ngModel)]="role.status"/>
+        </div>    
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="editRole = false">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="deleteRole" [(clrModalSize)]="sm">
+    <h3 class="modal-title">Delete Role: {{ roleToDelete }}</h3>
+    <div class="modal-body">
+        <p>Are you sure you want to delete, {{ roleToDelete }}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="deleteRole = false">No</button>
+        <button type="button" class="btn btn-primary" (click)="confirmDelete()">Yes</button>
+    </div>
+</clr-modal>

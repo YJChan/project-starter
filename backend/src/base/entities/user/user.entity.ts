@@ -3,10 +3,10 @@ import { UserAuthEntity } from '../user-auth/user-auth.entity';
 
 @Entity('tbl_user')
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid') 
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @CreateDateColumn() 
+  @CreateDateColumn()
   createdDate: Date;
 
   @UpdateDateColumn()
@@ -18,7 +18,7 @@ export class UserEntity {
   @Column('varchar', {length: 255})
   lastName: string;
 
-  @Column({type:'varchar', length: 255, nullable: true})
+  @Column({type: 'varchar', length: 255, nullable: true})
   middleName: string;
 
   @Column('varchar', {length: 255})
@@ -29,7 +29,7 @@ export class UserEntity {
 
   @Column({type: 'tinyint', default: 1})
   status: boolean;
-  
+
   @VersionColumn()
   version: number;
 

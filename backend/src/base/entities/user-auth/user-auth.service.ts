@@ -144,7 +144,8 @@ export class UserAuthService implements OnModuleInit{
     const {loginName, password} = data;
     
     const user = await this.userAuthRepository.findOne({
-      where : {loginName}
+      where : {loginName},
+      relations: ['role']
     });
 
     console.log('user %o', user);
@@ -187,6 +188,10 @@ export class UserAuthService implements OnModuleInit{
     return await this.findByPayload(payload);
   }
 
+  /**
+   * Find out the users who holding this role
+   * @param id role id
+   */
   async findRoleInUserAuth(id: string){
     return await this.userAuthRepository.find({
       where: {role: id}
@@ -219,7 +224,7 @@ export class UserAuthService implements OnModuleInit{
     }
 
     for(let i = 0; i < roles.length; i ++){
-      if(user.role.name === roles[i]){
+      if(user.role.name === roles[i] && user.role.status){
         validRole = true;
         break;
       }
