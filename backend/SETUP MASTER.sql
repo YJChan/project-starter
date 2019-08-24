@@ -1,21 +1,7 @@
 -- setup appifact project manage master user
 
-INSERT INTO `appifact_manage`.`tbl_user`
-(`id`,
-`firstName`,
-`lastName`,
-`middleName`,
-`email`,
-`phoneNum`,
-`version`)
-VALUES
-('FE1A469-A9E2-4113-ABEE-E46CC117A362',
-'Master',
-'',
-'',
-'master@appifact.com',
-'88888888',
-1);
+INSERT INTO `appifact_manage`.`tbl_user`(`id`, `firstName`, `lastName`, `middleName`, `email`, `phoneNum`, `version`)
+VALUES ('FE1A469-A9E2-4113-ABEE-E46CC117A362', 'Master', '', '', 'master@appifact.com', '88888888', 1);
 
 INSERT INTO `appifact_manage`.`tbl_user_auth` VALUES (
 '220b08cc-889e-47ad-8a2e-eb3b504d77fe', '1', 'master', '$2a$08$SI0Ydszs3A0Jdjr5oxpJiOUZbpJkEulpvgHJ3FOQZTD.7EFSeyRWi', '$2a$08$SI0Ydszs3A0Jdjr5oxpJiO', '', '', '0', '2019-03-30 16:28:54', 'a6b33991-cff2-45eb-9e52-b044db997c7f', '2019-03-30 16:28:54.156420', 'ADMIN', '2019-03-30 16:29:09.000000', 'ADMIN', '3');
@@ -50,4 +36,6 @@ VALUES
 UPDATE tbl_user_auth SET roleId = 'C7740181-773B-43D6-84C3-6F55F9F72085'
 WHERE id = '220b08cc-889e-47ad-8a2e-eb3b504d77fe';
 
-
+/* insert default login type */
+INSERT INTO tbl_login_type (`id`, `name`, `params`, `createdDate`, `createdBy`, `updatedDate`, `updatedBy`)
+VALUES ('dbfdd561-46c2-4c16-b152-c8d89e453a06', 'email', '"{}"', NOW(), 'E1A469-A9E2-4113-ABEE-E46CC117A362', NOW(), 'FE1A469-A9E2-4113-ABEE-E46CC117A362');

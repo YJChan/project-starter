@@ -1,13 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, VersionColumn, OneToOne, BeforeInsert, OneToMany, ManyToOne } from 'typeorm';
+import {
+    BeforeInsert, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne,
+    PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn,
+} from 'typeorm';
 import { RoleEntity } from '../role/role.entity';
+import { UserEntity } from '../user/user.entity';
+import { LoginTypeEntity } from '../login-type/login-type.entity';
 
 @Entity('tbl_user_auth')
 export class UserAuthEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('tinyint')
-  loginType: number;
+  @ManyToOne(type => LoginTypeEntity, loginType => loginType.id)
+  loginType: LoginTypeEntity;
 
   @Column('varchar', {length : 100})
   loginName: string;
@@ -41,7 +46,7 @@ export class UserAuthEntity {
 
   @UpdateDateColumn()
   updatedDate: Date;
-  
+
   @Column('varchar', {length: 40})
   updatedBy: string;
 
@@ -49,7 +54,12 @@ export class UserAuthEntity {
   version: number;
 
   @ManyToOne(type => RoleEntity, role => role.userAuth, {
-    cascade: true
+    cascade: true,
   })
   role: RoleEntity;
+
+  @ManyToOne(type => UserEntity, user => user.userAuth, {
+    cascade: true,
+  })
+  user: UserEntity;
 }

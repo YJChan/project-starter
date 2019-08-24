@@ -10,19 +10,19 @@ import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserAuthEntity]),
-    PassportModule.register({ 
-      defaultStrategy: 'jwt'
-    }),    
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+    }),
     JwtModule.register({
       secretOrPrivateKey: process.env.SECRET_KEY,
       signOptions: {
         expiresIn: process.env.TOKEN_EXPIRY,
-      }
-    }),    
-    forwardRef(() => UserModule)  
+      },
+    }),
+    forwardRef(() => UserModule),
   ],
   controllers: [UserAuthController],
   providers: [UserAuthService, JwtStrategy],
-  exports: [PassportModule, UserAuthService, JwtStrategy]
+  exports: [PassportModule, UserAuthService, JwtStrategy],
 })
 export class UserAuthModule {}

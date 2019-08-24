@@ -5,8 +5,8 @@ export class UserAuthDTO {
 
   id: string;
 
-  @IsInt()
-  loginType: number;
+  @IsString()
+  loginType: any;
 
   @IsNotEmpty()
   loginName: string;
@@ -65,7 +65,7 @@ export class RegisterUserAuthDTO {
 
 export class UserAuthRO {
   id: string;
-  loginType: number;
+  loginType: any;
   loginName: string;
   salt: string;
   password: string;

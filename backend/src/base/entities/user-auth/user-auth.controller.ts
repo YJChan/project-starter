@@ -16,7 +16,7 @@ export class UserAuthController {
 
     const accessToken = await this.userAuthService.generateAccessToken();
 
-    const jwtPayload = {
+    const jwtPayload: Payload = {
       username: userAuth.loginName,
       role: userAuth.role.name,
       act: accessToken,
@@ -27,7 +27,12 @@ export class UserAuthController {
 
     const token = await this.userAuthService.signPayload(jwtPayload);
 
-    return { loginUser: userAuth.loginName, token , userid: userAuth.id, role: userAuth.role.name };
+    return {
+      loginUser: userAuth.loginName,
+      token,
+      userid: userAuth.id,
+      role: userAuth.role.name,
+    };
   }
 
   @Post('register')

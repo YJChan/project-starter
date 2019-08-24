@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsNumber, IsString, Min, Max } from "class-validator";
-import { PermissionEntity } from "../../permission/permission.entity";
+import { IsNotEmpty, IsNumber, IsString, Min, Max } from 'class-validator';
+import { PermissionEntity } from '../../permission/permission.entity';
 
-export class RoleDTO{  
+export class RoleDTO {
   id: string;
 
   createdDate: Date;
@@ -14,11 +14,11 @@ export class RoleDTO{
   @Min(1)
   @Max(9)
   level: number;
-  
+
   status: boolean;
 
   @IsString()
   description: string;
-    
+
   permissions: PermissionEntity[];
 }

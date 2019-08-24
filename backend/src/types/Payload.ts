@@ -1,6 +1,6 @@
 
 /**
- * username = loginName from db 
+ * username = loginName from db
  * act = access token from db
  */
 export interface Payload {
@@ -8,4 +8,5 @@ export interface Payload {
   act: string;
   iat?: number;
   expiresIn?: string;
+  role?: string;
 }

@@ -1,10 +1,10 @@
-import { UserAuthEntity } from "../../user-auth/user-auth.entity";
+import { UserAuthEntity } from '../../user-auth/user-auth.entity';
 import { IsString, IsDate, IsBoolean, IsInt, IsDateString } from 'class-validator';
 
-export class UserDTO{
-    
+export class UserDTO {
+
   id: string;
-  
+
   readonly createdDate: Date;
 
   readonly updatedDate: Date;
@@ -23,7 +23,7 @@ export class UserDTO{
 
   @IsString()
   readonly phoneNum: string;
-  
+
   readonly status: boolean;
 
   readonly version: number;
@@ -31,8 +31,7 @@ export class UserDTO{
   userLogin: UserAuthEntity;
 }
 
-
-export class UserRO{    
+export class UserRO {
   id: string;
   createdDate: Date;
   updatedDate: Date;

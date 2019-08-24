@@ -22,20 +22,20 @@ import { CodeModule } from './base/entities/system/code/code.module';
     AppService,
     {
       provide: APP_FILTER,
-      useClass: HttpErrorFilter
+      useClass: HttpErrorFilter,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: LoggingInterceptor
+      useClass: LoggingInterceptor,
     },
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard
+      useClass: JwtAuthGuard,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: ResponseInterceptor
-    }
-  ]
+      useClass: ResponseInterceptor,
+    },
+  ],
 })
 export class AppModule {}
