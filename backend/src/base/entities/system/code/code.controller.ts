@@ -3,7 +3,7 @@ import { CodeService } from './code.service';
 import { CodeDTO } from './dto/code.dto';
 import { Roles } from '../../user-auth/decorator/role.decorator';
 import { Permission } from '../../user-auth/decorator/permission.decorator';
-import { ValidationPipe } from 'src/shared/validation.pipe';
+import { ValidationPipe } from '../../../../shared/validation.pipe';
 import { CodeEntity } from './code.entity';
 
 @Controller('api/code')

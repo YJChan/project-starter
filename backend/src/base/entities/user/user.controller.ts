@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Logger, UsePipes, UseGuards, HttpException, HttpStatus, SetMetadata } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDTO } from './dto/user.dto';
-import { ValidationPipe } from 'src/shared/validation.pipe';
+import { ValidationPipe } from '../../../shared/validation.pipe';
 import { AuthGuard } from '@nestjs/passport';
 import { RegisterUserAuthDTO } from '../user-auth/dto/user-auth.dto';
 import { UserAuthService } from '../user-auth/user-auth.service';

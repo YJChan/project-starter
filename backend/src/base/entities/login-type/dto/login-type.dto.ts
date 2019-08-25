@@ -17,4 +17,13 @@ export class LoginTypeDTO {
   updatedBy: string;
 
   updatedDate: Date;
+
+  constructor() {
+    this.name = '';
+    this.params = JSON.stringify({});
+    this.createdBy = '';
+    this.createdDate = new Date();
+    this.updatedBy = '';
+    this.updatedDate = new Date();
+  }
 }

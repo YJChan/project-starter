@@ -7,6 +7,7 @@ import { JwtStrategy } from './passport/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
+import { RoleModule } from '../role/role.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserAuthEntity]),
@@ -20,6 +21,7 @@ import { UserModule } from '../user/user.module';
       },
     }),
     forwardRef(() => UserModule),
+    forwardRef(() => RoleModule),
   ],
   controllers: [UserAuthController],
   providers: [UserAuthService, JwtStrategy],

@@ -14,7 +14,7 @@ export class LoginTypeService {
   ) {
   }
 
-  async create(data: LoginTypeDTO) {
+  async create(data: LoginTypeDTO): Promise<LoginTypeDTO> {
     try {
       const loginType = await this.loginTypeRepository.save(data);
       return loginType;
@@ -23,7 +23,7 @@ export class LoginTypeService {
     }
   }
 
-  async update(id: string, data: Partial<LoginTypeDTO>) {
+  async update(id: string, data: Partial<LoginTypeDTO>): Promise<LoginTypeDTO> {
     try {
       const loginType = await this.loginTypeRepository.findOne({where: id});
       if (!loginType) {

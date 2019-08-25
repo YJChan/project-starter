@@ -1,25 +1,26 @@
-import { Injectable, HttpException, HttpStatus, OnModuleInit, Logger } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, OnModuleInit, Logger, Inject, forwardRef } from '@nestjs/common';
 import { RoleEntity } from './role.entity';
 import { Repository, FindConditions, FindOneOptions, FindManyOptions } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoleDTO } from './dto/role.dto';
 import { ModuleRef } from '@nestjs/core';
-import { UserAuthService } from '../user-auth/user-auth.service';
+import { UserAuthEntity } from '../user-auth/user-auth.entity';
 
 @Injectable()
 export class RoleService implements OnModuleInit {
 
-  private userAuthService: UserAuthService;
+  // private userAuthService: UserAuthService;
 
   constructor(
     @InjectRepository(RoleEntity) private roleRepository: Repository<RoleEntity>,
-    private moduleRef: ModuleRef,
+    @InjectRepository(UserAuthEntity) private userAuthRepository: Repository<UserAuthEntity>,
+    // private moduleRef: ModuleRef,
   ) {
 
   }
 
   onModuleInit() {
-    this.userAuthService = this.moduleRef.get(UserAuthService, {strict: false});
+    // this.userAuthService = this.moduleRef.get(UserAuthService, {strict: false});
   }
 
   async create(data: RoleDTO) {
@@ -65,7 +66,9 @@ export class RoleService implements OnModuleInit {
 
   async delete(id: string) {
     Logger.log('req to delete role' + id);
-    const userAuthWithThisRole = await this.userAuthService.findRoleInUserAuth(id);
+    const userAuthWithThisRole = await this.userAuthRepository.find({
+      where: {role: id},
+    });
     Logger.log('number of role user attached, ' + userAuthWithThisRole.length);
     if (userAuthWithThisRole.length > 0) {
       throw new HttpException('There are users attached to this role, cannot be delete', HttpStatus.BAD_REQUEST);

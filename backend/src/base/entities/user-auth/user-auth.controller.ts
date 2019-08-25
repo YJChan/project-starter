@@ -4,7 +4,7 @@ import { AuthenticateUserDTO, RegisterUserAuthDTO } from './dto/user-auth.dto';
 import { Payload } from 'src/types/Payload';
 import { Roles } from './decorator/role.decorator';
 import { Permission } from './decorator/permission.decorator';
-import { ValidationPipe } from 'src/shared/validation.pipe';
+import { ValidationPipe } from '../../../shared/validation.pipe';
 
 @Controller('api/auth')
 export class UserAuthController {

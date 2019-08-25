@@ -3,7 +3,7 @@ import { CodeTypeDTO } from './dto/code-type.dto';
 import { Roles } from '../../user-auth/decorator/role.decorator';
 import { Permission } from '../../user-auth/decorator/permission.decorator';
 import { CodeTypeService } from './code-type.service';
-import { ValidationPipe } from 'src/shared/validation.pipe';
+import { ValidationPipe } from '../../../../shared/validation.pipe';
 
 @Controller('api/code-type')
 export class CodeTypeController {

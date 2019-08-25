@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus, Logger, OnModuleInit } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Logger, OnModuleInit, forwardRef, Inject } from '@nestjs/common';
 import { UserAuthEntity } from './user-auth.entity';
 import { Repository, Not, IsNull, FindManyOptions } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,19 +15,21 @@ import { LoginTypeDTO } from '../login-type/dto/login-type.dto';
 @Injectable()
 export class UserAuthService implements OnModuleInit {
 
-  private userService: UserService;
-  private roleService: RoleService;
+  // private userService: UserService;
+  // private roleService: RoleService;
   private encryptor: Encryption;
   constructor(
     @InjectRepository(UserAuthEntity) private userAuthRepository: Repository<UserAuthEntity>,
-    private readonly moduleRef: ModuleRef,
+    // private readonly moduleRef: ModuleRef,
+    @Inject(forwardRef(() => UserService)) private userService: UserService,
+    @Inject(forwardRef(() => RoleService)) private roleService: RoleService,
   ) {
     this.encryptor = new Encryption();
   }
 
   onModuleInit() {
-    this.userService = this.moduleRef.get(UserService, {strict: false});
-    this.roleService = this.moduleRef.get(RoleService, {strict: false});
+    // this.userService = this.moduleRef.get(UserService, {strict: false});
+    // this.roleService = this.moduleRef.get(RoleService, {strict: false});
   }
 
   async register(registerUserAuthDTO: RegisterUserAuthDTO) {
